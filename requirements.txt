@@ -1,0 +1,6 @@
+fastapi
+fastapi[standard]
+
+huggingface_hub
+
+Pillow
