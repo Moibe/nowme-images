@@ -1,5 +1,6 @@
 import bridges
 from huggingface_hub import InferenceClient
+<<<<<<< HEAD
 import gradio_client
 import io
 import globales
@@ -48,11 +49,29 @@ def genera_platillo_inference(platillo):
         )
 
     prompt = previo + platillo
+=======
+from PIL import Image
+
+def genera_platillo(prompt): 
+    enlace = "black-forest-labs/FLUX.1-dev"
+    proveedor =  "hf-inference"
+
+    client = InferenceClient(
+            provider= proveedor,
+            api_key=bridges.hug
+        ) 
+    
+    #Testing change,
+>>>>>>> 5b38336 (Inicio)
 
     try: 
         image = client.text_to_image(
         prompt,
+<<<<<<< HEAD
         model=globales.inferencia,
+=======
+        model=enlace,
+>>>>>>> 5b38336 (Inicio)
         #seed=42, #default varía pero el default es que siempre sea la misma.
         #guidance_scale=7.5,
         #num_inference_steps=50,
@@ -60,11 +79,15 @@ def genera_platillo_inference(platillo):
         #height=1024 #El límite de replicate es 1024.
         )
 
+<<<<<<< HEAD
         img_io = io.BytesIO()
         image.save(img_io, "PNG")
         img_io.seek(0)
 
         return img_io         
+=======
+        return image        
+>>>>>>> 5b38336 (Inicio)
         
     except Exception as e:
         print("Excepción es: ", e)

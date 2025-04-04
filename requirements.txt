@@ -2,6 +2,9 @@ fastapi
 fastapi[standard]
 
 huggingface_hub
+<<<<<<< HEAD
 gradio_client
+=======
+>>>>>>> 5b38336 (Inicio)
 
 Pillow
