@@ -12,6 +12,7 @@ def obtenAccesoHF():
 
         print("Ésto es llave:", llave)
 
+
     return llave
 
 def local_check(): 
