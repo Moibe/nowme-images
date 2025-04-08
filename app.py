@@ -1,12 +1,8 @@
-from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import StreamingResponse
-
-import io
-from io import BytesIO
-
 from fastapi import FastAPI, Form
-
-import funciones
+from fastapi import FastAPI, File, UploadFile
+from fastapi.responses import StreamingResponse, FileResponse
+from io import BytesIO
+import funciones, globales
 
 app = FastAPI()
 
@@ -18,15 +14,14 @@ async def echo_image(image: UploadFile = File(...)):
     contents = await image.read()
     return StreamingResponse(BytesIO(contents), media_type=image.content_type)
 
-@app.post("/get-platillo/")
-async def get_platillo_image(prompt: str = Form(...)):
-    
-    imagen_pil = funciones.genera_platillo(prompt)
+@app.post("/genera-imagen/")
+async def genera_imagen(platillo: str = Form(...)):
 
-    img_io = io.BytesIO()
-    imagen_pil.save(img_io, "PNG")
-    img_io.seek(0)
-    
-    #Ver cual es el mejor resultado para backend, si forzar la disposición de archivo o permitir que el navegador decida (puede que sea irrelevante para un consumo de la api directo)
-    #return StreamingResponse(content=img_io, media_type="image/png", headers={"Content-Disposition": "attachment; filename=platillo.png"})
-    return StreamingResponse(content=img_io, media_type="image/png")
+    if globales.seconds_available > 25:
+        print("GPU...")
+        resultado = funciones.genera_platillo_gpu(platillo)
+        return FileResponse(resultado, media_type="image/png", filename="imagen.png")
+    else: 
+        print("Inference...")
+        resultado = funciones.genera_platillo_inference(platillo)
+        return StreamingResponse(content=resultado, media_type="image/png")
